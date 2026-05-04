@@ -18,6 +18,11 @@ void Dyhotomia_class::setTolerance (double vol_eps)
     this->eps = vol_eps;
 }
 
+void Dyhotomia_class::setMaxIter (int m) 
+{
+    this->maxIter = m;
+}
+
 double Dyhotomia_class::F(double x) 
 {
     if (x < 0) {
@@ -27,8 +32,10 @@ double Dyhotomia_class::F(double x)
     return x + sqrt(x) + cbrt(x) - 2.5;
 }
 
-double Dyhotomia_class::Dyhotomia()
+double Dyhotomia_class::Dyhotomia(int &iterations)
 {
+    iterations = 0;
+
     if (eps == 0){
         cout << "eps = 0" << endl;
         return 0;
@@ -48,6 +55,7 @@ double Dyhotomia_class::Dyhotomia()
         else {
             a = c;
         }
+        iterations++;
     }
 
     return (a + b) / 2;
@@ -59,8 +67,10 @@ double Dyhotomia_class::pohidna(double x)
     return (F(x + delta_x) - F(x)) / delta_x;
 }
 
-double Dyhotomia_class::Newton()
+double Dyhotomia_class::Newton(int &iterations)
 {
+    iterations = 0;
+
     if (eps == 0){
         cout << "eps = 0" << endl;
         return 0;
@@ -73,7 +83,7 @@ double Dyhotomia_class::Newton()
 
     double x_n = (a + b) / 2;
 
-    while (true){
+    while (iterations < maxIter){
         double deriv = pohidna(x_n);
 
         if (fabs(deriv) < eps) {
@@ -81,13 +91,16 @@ double Dyhotomia_class::Newton()
         }
 
         double x_n1 = x_n - (F(x_n) / deriv);
+        iterations++;
 
         if (fabs(x_n1 - x_n) < eps){
-            break;
+            return x_n1;
         }
 
         x_n = x_n1;
+    
     }
 
+    cout << "The maximum number of iterations has been reached" << endl;
     return x_n;
 }

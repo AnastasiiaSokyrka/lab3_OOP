@@ -5,15 +5,16 @@ class Dyhotomia_class {
     public:
         Dyhotomia_class(void);
         ~Dyhotomia_class(void);
-    private:
-        double a, b, eps;
-    public:
         void setVolumes(double vol_a, double vol_b);
         void setTolerance(double vol_eps);
+        void setMaxIter(int m);
         double F(double x);
-        double Dyhotomia();    
+        double Dyhotomia(int &iterations);    
         double pohidna(double x);
-        double Newton();
+        double Newton(int &iterations);
+    private:
+        double a, b, eps;  
+        int maxIter;      
 };
 
 #endif
