@@ -1,5 +1,5 @@
 #ifndef DYHOTOMIA_CLASS_H
-#define DYHOTOMIA_CLASS_CPP
+#define DYHOTOMIA_CLASS_H
 
 class Dyhotomia_class {
     public:

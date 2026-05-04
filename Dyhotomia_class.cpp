@@ -35,35 +35,37 @@ double Dyhotomia_class::F(double x)
 double Dyhotomia_class::Dyhotomia(int &iterations)
 {
     iterations = 0;
+    double temp_a=a;
+    double temp_b=b;
 
     if (eps == 0){
         cout << "eps = 0" << endl;
         return 0;
     }
 
-    if (F(a)*F(b) > 0) {
+    if (F(temp_a)*F(temp_b) > 0) {
         cout << "There is no solution!" << endl;
         return 0;
     }
 
-    while (fabs(b - a) > eps){
-        double c = (a + b) / 2;
+    while (fabs(temp_b - temp_a) > eps){
+        double c = (temp_a + temp_b) / 2;
 
-        if (F(a) * F(c) < 0){
-            b = c;
+        if (F(temp_a) * F(c) < 0){
+            temp_b = c;
         }
         else {
-            a = c;
+            temp_a = c;
         }
         iterations++;
     }
 
-    return (a + b) / 2;
+    return (temp_a + temp_b) / 2;
 }
 
 double Dyhotomia_class::pohidna(double x)
 {
-    double delta_x = eps;
+    double delta_x = sqrt(eps);
     return (F(x + delta_x) - F(x)) / delta_x;
 }
 
@@ -81,19 +83,26 @@ double Dyhotomia_class::Newton(int &iterations)
         return 0;
     }
 
-    double x_n = (a + b) / 2;
+    double low = a;
+    double high = b;
+    double x_n = high;
 
     while (iterations < maxIter){
+        double f_val=F(x_n);
         double deriv = pohidna(x_n);
 
         if (fabs(deriv) < eps) {
+            cout<< "Derivative is too small" << endl;
             return x_n;
         }
 
-        double x_n1 = x_n - (F(x_n) / deriv);
+        double x_n1 = x_n - (f_val / deriv);
         iterations++;
 
-        if (fabs(x_n1 - x_n) < eps){
+        if (x_n1 < low) x_n1 = low + eps;
+        if (x_n1 > high) x_n1 = high - eps;
+
+        if (fabs(x_n1 - x_n) < eps) {
             return x_n1;
         }
 
@@ -101,6 +110,6 @@ double Dyhotomia_class::Newton(int &iterations)
     
     }
 
-    cout << "The maximum number of iterations has been reached" << endl;
+    cout << "Max iterations reached" << endl;
     return x_n;
 }

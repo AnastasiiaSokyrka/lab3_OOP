@@ -24,6 +24,5 @@ int main() {
 
 
     delete dyh;
-
     return 0;
 }
