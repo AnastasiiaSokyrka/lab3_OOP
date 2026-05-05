@@ -65,8 +65,7 @@ double Dyhotomia_class::Dyhotomia(int &iterations)
 
 double Dyhotomia_class::pohidna(double x)
 {
-    double delta_x = sqrt(eps);
-    return (F(x + delta_x) - F(x)) / delta_x;
+    return (F(x + eps) - F(x)) / eps;
 }
 
 double Dyhotomia_class::Newton(int &iterations)
